@@ -20,11 +20,14 @@ class Maze:
         self.maze = []
         self.row_count, self.column_count = size
 
-    def generate(self):
+    def fill(self):
         for x in range(0, self.row_count):
             self.maze.append([])
             for y in range(0, self.column_count):
                 self.maze[x].append(Cell())
+
+    def generate(self):
+        self.fill()
 
         for x in range(0, self.row_count):
             for y in range(0, self.column_count):
