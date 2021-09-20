@@ -43,8 +43,6 @@ class Maze:
                     if y != self.column_count - 1:
                         self.maze[x][y].set_right(False)
 
-
-
     def render(self, pos: tuple[int, int], block_size: int,
                color: tuple[int, int, int]):
 

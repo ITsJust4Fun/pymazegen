@@ -18,7 +18,7 @@ if __name__ == '__main__':
     clock = pygame.time.Clock()
 
     debug_info = DebugInfo(screen, clock)
-    options = {'fps': True, 'frame_time': True}
+    debug_options = {'fps': True, 'frametime': True, 'frametime_graph': True, 'frametime_peek': True}
 
     maze = Maze(screen, maze_size)
     maze.generate()
@@ -59,7 +59,7 @@ if __name__ == '__main__':
 
         screen.fill(WHITE)
         maze.render(maze_pos, maze_block_size, BLACK)
-        debug_info.render(options)
+        debug_info.render(debug_options)
 
         pygame.display.flip()
 
