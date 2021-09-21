@@ -22,6 +22,7 @@ if __name__ == '__main__':
 
     maze = Maze(screen, maze_size)
     maze.generate()
+    #maze.import_file('file.txt')
 
     maze_pos = ((WINDOW_SIZE[0] // 2) - (maze_size[0] * maze_block_size // 2),
                 (WINDOW_SIZE[1] // 2) - (maze_size[1] * maze_block_size // 2))

@@ -14,6 +14,27 @@ class Cell:
         self.bottom = value
 
 
+class Value:
+    def __init__(self):
+        self.x1 = 0  # horizontal interval
+        self.x2 = 0
+
+        self.y1 = 0  # vertical interval
+        self.y2 = 0
+
+        self.is_horizontal = True
+        self.wall_position = 0
+        self.door_position = 0
+
+
+class Node:
+    def __init__(self):
+        self.left = None
+        self.right = None
+        self.value = None
+
+
+
 class Maze:
     def __init__(self, screen, size: tuple[int, int]):
         self.screen = screen
@@ -25,6 +46,49 @@ class Maze:
             self.maze.append([])
             for y in range(0, self.column_count):
                 self.maze[x].append(Cell())
+
+    def import_file(self, file_name):
+        with open(file_name, 'r') as file:
+            lines = file.readlines()
+
+            for line in lines:
+                self.maze.append([])
+                for letter in line:
+                    if letter.isdigit():
+                        cell = Cell()
+                        digit = int(letter)
+
+                        if digit == 0:
+                            cell.bottom = False
+                            cell.right = False
+                        elif digit == 1:
+                            cell.bottom = False
+                        elif digit == 2:
+                            cell.right = False
+
+                        self.maze[-1].append(cell)
+
+            self.row_count = len(self.maze)
+            self.column_count = len(self.maze[0])
+
+    def generate_binary(self, node: Node, x1, x2, y1, y2):
+        if x2 - x1 == 0 and y2 - y1 == 0:
+            return
+
+        node.value.is_horizontal = random.uniform(0, 1) >= 0.5
+
+        if node.value.is_horizontal:
+            node.value.wall_position = int(random.uniform(y1, y2))
+            node.value.door_position = int(random.uniform(x1, x2))
+
+            self.generate_binary(node.left, x1, x2, y1, node.value.wall_position)
+            self.generate_binary(node.right, x1, x2, node.value.wall_position + 1, y2)
+        else:
+            node.value.wall_position = int(random.uniform(x1, x2))
+            node.value.door_position = int(random.uniform(y1, y2))
+
+            self.generate_binary(node.left, x1, node.value.wall_position, y1, y2)
+            self.generate_binary(node.right, node.value.wall_position + 1, x2, y1, y2)
 
     def generate(self):
         self.fill()
