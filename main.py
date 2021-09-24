@@ -6,14 +6,14 @@ from Maze import Maze
 maze_size = (50, 50)
 maze_block_size = 10
 speed = 1
-WINDOW_SIZE = (1280, 720)
+WINDOW_SIZE = (1800, 1000)
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
 
 
 if __name__ == '__main__':
     pygame.init()
-    pygame.display.set_caption('Game')
+    pygame.display.set_caption('Maze')
     screen = pygame.display.set_mode(WINDOW_SIZE, 0, 32)
     clock = pygame.time.Clock()
 
@@ -22,7 +22,8 @@ if __name__ == '__main__':
 
     maze = Maze(screen, maze_size)
     #maze.generate()
-    maze.import_file('100x50.txt')
+    maze.import_file('5x5.txt')
+    maze_size = maze.column_count, maze.row_count
 
     maze_pos = ((WINDOW_SIZE[0] // 2) - (maze_size[0] * maze_block_size // 2),
                 (WINDOW_SIZE[1] // 2) - (maze_size[1] * maze_block_size // 2))
@@ -51,6 +52,11 @@ if __name__ == '__main__':
                     maze_block_size -= 1 * speed
                 if event.button == 5:
                     maze_block_size += 1 * speed
+            elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_KP_PLUS:
+                    maze_block_size += 1
+                if event.key == pygame.K_KP_MINUS:
+                    maze_block_size -= 1
 
         if maze_block_size >= 10:
             speed = maze_block_size // 10
@@ -68,6 +74,12 @@ if __name__ == '__main__':
 
         if keys[pygame.K_DOWN]:
             maze_pos = maze_pos[0], maze_pos[1] + 1 * speed * 10
+        #
+        # if keys[pygame.K_KP_PLUS]:
+        #     maze_block_size += 1 * speed
+        #
+        # if keys[pygame.K_KP_MINUS]:
+        #     maze_block_size -= 1 * speed
 
         clock.tick(60)
 
