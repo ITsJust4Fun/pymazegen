@@ -6,7 +6,7 @@ from Maze import Maze
 maze_size = (50, 50)
 maze_block_size = 10
 speed = 1
-WINDOW_SIZE = (1160, 640)
+WINDOW_SIZE = (1280, 720)
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
 
@@ -21,11 +21,24 @@ if __name__ == '__main__':
     debug_options = {'fps': True, 'frametime': True, 'frametime_graph': True, 'frametime_peek': True}
 
     maze = Maze(screen, maze_size)
-    maze.generate()
-    #maze.import_file('file.txt')
+    #maze.generate()
+    maze.import_file('100x50.txt')
 
     maze_pos = ((WINDOW_SIZE[0] // 2) - (maze_size[0] * maze_block_size // 2),
                 (WINDOW_SIZE[1] // 2) - (maze_size[1] * maze_block_size // 2))
+
+    # n, m = 5, 5
+    # k = 0
+    #
+    # node = maze.generate_binary(0, m - 1, 0, n - 1)
+    # table = []
+    # maze.generate_table(node, table, n, m)
+    #
+    # for i in range(0, len(table)):
+    #     for j in table[i]:
+    #         print(j, '', '')
+    #     print('\n', '', '')
+
 
     running = True
     while running:
