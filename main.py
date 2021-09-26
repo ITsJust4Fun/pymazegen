@@ -3,7 +3,7 @@ from DebugInfo import DebugInfo
 from Maze import Maze
 
 
-maze_size = (2, 2)
+maze_size = (50, 50)
 maze_block_size = 10
 speed = 1
 WINDOW_SIZE = (1800, 1000)
@@ -22,26 +22,12 @@ if __name__ == '__main__':
 
     maze = Maze(screen, maze_size)
     #maze.generate()
-    #maze.import_file('50x100.txt')
+    maze.generate_tree()
+    #maze.import_file('100x50.txt')
     maze_size = maze.column_count, maze.row_count
 
     maze_pos = ((WINDOW_SIZE[0] // 2) - (maze_size[0] * maze_block_size // 2),
                 (WINDOW_SIZE[1] // 2) - (maze_size[1] * maze_block_size // 2))
-
-    n, m = maze.row_count, maze.column_count
-
-    node = maze.generate_binary(0, m - 1, 0, n - 1)
-    table = []
-
-    for i in range(0, 2 * n + 1):
-        table.append([])
-        table[i] = [' '] * (2 * m + 1)
-        for j in range(0, 2 * m + 1):
-            if i == 0 or j == 0 or i == 2 * n or j == 2 * m:
-                table[i][j] = '#'
-
-    maze.generate_table(node, table, n - 1, m - 1)
-    maze.table_to_maze(table)
 
     running = True
     while running:
@@ -76,12 +62,6 @@ if __name__ == '__main__':
 
         if keys[pygame.K_DOWN]:
             maze_pos = maze_pos[0], maze_pos[1] + 1 * speed * 10
-        #
-        # if keys[pygame.K_KP_PLUS]:
-        #     maze_block_size += 1 * speed
-        #
-        # if keys[pygame.K_KP_MINUS]:
-        #     maze_block_size -= 1 * speed
 
         clock.tick(60)
 
