@@ -72,12 +72,12 @@ class Maze:
 
         if node.value.is_horizontal:
             for i in range(node.value.x1, node.value.x2 + 1):
-                wall = True if i != node.value.door_position else False
-                self.maze[node.value.wall_position][i].bottom = wall
+                is_wall = i != node.value.door_position
+                self.maze[node.value.wall_position][i].bottom = is_wall
         else:
             for i in range(node.value.y1, node.value.y2 + 1):
-                wall = True if i != node.value.door_position else False
-                self.maze[i][node.value.wall_position].right = wall
+                is_wall = i != node.value.door_position
+                self.maze[i][node.value.wall_position].right = is_wall
 
         self.tree_to_table(node.left)
         self.tree_to_table(node.right)
