@@ -1,6 +1,5 @@
 import pygame
 import random
-import math
 
 
 class Cell:
@@ -80,21 +79,31 @@ class Maze:
             self.column_count = len(self.maze[0])
 
     def generate_table(self, node, table, n, m):
-        if not node:
-            return
-
         if node.value.is_horizontal:
             for i in range(2 * node.value.x1 + 1, 2 * (node.value.x2 + 1)):
                 table[2 * (node.value.wall_position + 1)][i] = '#'
             table[2 * (node.value.wall_position + 1)][2 * node.value.door_position + 1] = ' '
         else:
-            for i in range(2 * node.value.y1 + 1, 2 * (node.value.y2 + 1)):
+            for i in range(2 * (node.value.y1 + 1), 2 * (node.value.y2 + 1)):
                 table[i][2 * (node.value.wall_position + 1)] = '#'
             table[2 * node.value.door_position + 1][2 * (node.value.wall_position + 1)] = ' '
 
         if not node.value.last:
             self.generate_table(node.left, table, n, m)
             self.generate_table(node.right, table, n, m)
+
+    def table_to_maze(self, table):
+        self.fill()
+        maze_i = 0
+        for i in range(1, 2 * self.row_count + 1, 2):
+            maze_j = 0
+            for j in range(1, 2 * self.column_count + 1, 2):
+                bottom = table[i + 1][j]
+                right = table[i][j + 1]
+                self.maze[maze_i][maze_j].bottom = bottom == '#'
+                self.maze[maze_i][maze_j].right = right == '#'
+                maze_j += 1
+            maze_i += 1
 
     def generate_binary(self, x1, x2, y1, y2):
         if x1 < 0 or x2 < 0 or y1 < 0 or y2 < 0 or x1 > x2 or y1 > y2:
@@ -106,26 +115,26 @@ class Maze:
         node.value.y1 = y1
         node.value.y2 = y2
 
-        if x2 - x1 == 0 and y2 - y1 == 0:
+        if x2 == x1 and y2 == y1:
             node.value.last = True
         else:
             node.value.last = False
             node.value.is_horizontal = not not random.randrange(0, 2)
 
-            if node.value.is_horizontal and y2 - y1 == 0:
+            if node.value.is_horizontal and y2 == y1:
                 node.value.is_horizontal = False
-            elif not node.value.is_horizontal and x2 - x1 == 0:
+            elif not node.value.is_horizontal and x2 == x1:
                 node.value.is_horizontal = True
 
             if node.value.is_horizontal:
-                node.value.wall_position = math.floor((y2 + y1) / 2)
-                node.value.door_position = random.randrange(x1, x2 + 1) if x2 != 0 else 0
+                node.value.wall_position = (y2 + y1) // 2
+                node.value.door_position = random.randrange(x1, x2) if x2 != x1 else x1
 
                 node.left = self.generate_binary(x1, x2, y1, node.value.wall_position)
                 node.right = self.generate_binary(x1, x2, node.value.wall_position + 1, y2)
             else:
-                node.value.wall_position = math.floor((x2 + x1) / 2)
-                node.value.door_position = random.randrange(y1, y2 + 1) if y2 != 0 else 0
+                node.value.wall_position = (x2 + x1) // 2
+                node.value.door_position = random.randrange(y1, y2) if y2 != y1 else y1
 
                 node.left = self.generate_binary(x1, node.value.wall_position, y1, y2)
                 node.right = self.generate_binary(node.value.wall_position + 1, x2, y1, y2)

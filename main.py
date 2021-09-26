@@ -3,7 +3,7 @@ from DebugInfo import DebugInfo
 from Maze import Maze
 
 
-maze_size = (50, 50)
+maze_size = (2, 2)
 maze_block_size = 10
 speed = 1
 WINDOW_SIZE = (1800, 1000)
@@ -22,14 +22,13 @@ if __name__ == '__main__':
 
     maze = Maze(screen, maze_size)
     #maze.generate()
-    maze.import_file('5x5.txt')
+    #maze.import_file('50x100.txt')
     maze_size = maze.column_count, maze.row_count
 
     maze_pos = ((WINDOW_SIZE[0] // 2) - (maze_size[0] * maze_block_size // 2),
                 (WINDOW_SIZE[1] // 2) - (maze_size[1] * maze_block_size // 2))
 
-    n, m = 5, 5
-    k = 0
+    n, m = maze.row_count, maze.column_count
 
     node = maze.generate_binary(0, m - 1, 0, n - 1)
     table = []
@@ -41,13 +40,8 @@ if __name__ == '__main__':
             if i == 0 or j == 0 or i == 2 * n or j == 2 * m:
                 table[i][j] = '#'
 
-    maze.generate_table(node, table, n, m)
-
-    for i in range(0, len(table)):
-        for j in table[i]:
-            print(j, end='')
-        print('\n', end='')
-
+    maze.generate_table(node, table, n - 1, m - 1)
+    maze.table_to_maze(table)
 
     running = True
     while running:
