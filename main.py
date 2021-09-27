@@ -20,14 +20,13 @@ if __name__ == '__main__':
     debug_options = {'fps': True, 'frametime': True, 'frametime_graph': True, 'frametime_peek': True}
 
     maze = Maze(screen, maze_size)
-    #maze.generate()
+    # maze.generate()
     maze.generate_tree()
-    #maze.import_file('100x50.txt')
+    # maze.import_file('100x50.txt')
     maze_size = maze.column_count, maze.row_count
 
     maze_pos = ((WINDOW_SIZE[0] // 2) - (maze_size[0] * maze_block_size // 2),
                 (WINDOW_SIZE[1] // 2) - (maze_size[1] * maze_block_size // 2))
-
 
     running = True
     while running:

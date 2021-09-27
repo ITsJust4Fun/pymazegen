@@ -170,6 +170,8 @@ class Maze:
                     if y != self.column_count - 1:
                         self.maze[x][y].set_right(False)
 
+        self.get_full_tree_path(0, 0, self.row_count - 1, self.column_count - 1)
+
     def generate_tree(self):
         n, m = self.row_count, self.column_count
 
