@@ -2,8 +2,7 @@ import pygame
 from DebugInfo import DebugInfo
 from Maze import Maze
 
-
-maze_size = (50, 50)
+maze_size = (70, 70)
 maze_block_size = 10
 speed = 1
 WINDOW_SIZE = (1800, 1000)
@@ -28,6 +27,7 @@ if __name__ == '__main__':
 
     maze_pos = ((WINDOW_SIZE[0] // 2) - (maze_size[0] * maze_block_size // 2),
                 (WINDOW_SIZE[1] // 2) - (maze_size[1] * maze_block_size // 2))
+
 
     running = True
     while running:
