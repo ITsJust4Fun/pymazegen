@@ -272,7 +272,7 @@ class Maze:
 
     def render(self, pos: tuple[int, int], block_size: int,
                color: tuple[int, int, int]):
-
+        red = (255, 0, 0)
         pos_x, pos_y = pos
         height = block_size * self.row_count
         width = block_size * self.column_count
@@ -289,8 +289,27 @@ class Maze:
                     pygame.draw.line(self.screen, color, (x, y + block_size), (x + block_size, y + block_size), 2)
 
                 if self.maze[index_y][index_x].is_path:
-                    rect = pygame.Rect(x + 3, y + 3, block_size - 4, block_size - 4)
-                    pygame.draw.rect(self.screen, (255, 0, 0), rect)
+                    is_left, is_right, is_top, is_bottom = False, False, False, False
+                    half_block = block_size // 2
+                    mid = (x + half_block, y + half_block)
+
+                    if 0 <= (index_x - 1) and not self.maze[index_y][index_x - 1].right:
+                        is_left = self.maze[index_y][index_x - 1].is_path
+                    if index_x + 1 < self.column_count and not self.maze[index_y][index_x].right:
+                        is_right = self.maze[index_y][index_x + 1].is_path
+                    if 0 <= (index_y - 1) and not self.maze[index_y - 1][index_x].bottom:
+                        is_top = self.maze[index_y - 1][index_x].is_path
+                    if index_y + 1 < self.row_count and not self.maze[index_y][index_x].bottom:
+                        is_bottom = self.maze[index_y + 1][index_x].is_path
+
+                    if is_left:
+                        pygame.draw.line(self.screen, red, mid, (x, y + half_block), 4)
+                    if is_right:
+                        pygame.draw.line(self.screen, red, mid, (x + block_size, y + half_block), 4)
+                    if is_top:
+                        pygame.draw.line(self.screen, red, mid, (x + half_block, y), 4)
+                    if is_bottom:
+                        pygame.draw.line(self.screen, red, mid, (x + half_block, y + block_size), 4)
 
                 if y == pos_y:
                     pygame.draw.line(self.screen, color, (x, y), (x + block_size, y), 2)
